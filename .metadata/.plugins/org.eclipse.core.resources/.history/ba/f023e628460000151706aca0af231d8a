@@ -1,0 +1,28 @@
+package pdss5.hs.hdw;
+
+public class LogTableVO {
+
+	//private Integer logNo	;
+	private String prgrmId	;
+	private String elpsdTime;
+	private String errCntnt	;
+	private String exeEndTmstmp	;
+	private String exeGrpId	;
+	private String exeStrtTmstmp;
+	private String exeSttsVal	;
+	private String exeTypNm	;
+	private Integer failCnt	;
+	private Integer rowCnt	;	
+	private String sqlCondtnTxt	;
+	private String srcTblId	;
+	private String srcTblNm	;
+	private String srcTblOwnrId	;
+	private String tgtTblId	;
+	private String tgtTblNm;
+	private String upTmstmp	;
+
+	
+	
+	
+	
+}

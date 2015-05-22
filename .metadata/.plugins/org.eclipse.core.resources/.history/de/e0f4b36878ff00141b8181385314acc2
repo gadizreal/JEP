@@ -1,0 +1,185 @@
+package pdss5.hs.hdw;
+
+import java.util.List;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+//import java.awt.List;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.acl.LastOwnerException;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import org.apache.ibatis.io.Resources;
+/*import org.apache.ibatis.io.Resources;*/
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.ResultContext;
+import org.apache.ibatis.session.ResultHandler;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+/*import org.apache.ibatis.session.SqlSessionFactory;*/
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.slf4j.LoggerFactory;
+
+public class CopyOfJavaETLProgram {
+
+	private static long start;
+	private static Properties props;
+	private static Properties targetProps;
+	private static Properties metaProps;
+	private static String properties_home = "d:\\dev\\";
+
+	public static void main(String[] args) throws IOException {
+		File default_file = null;
+		String meta_proerties = properties_home + "meta_properties.txt";
+		String filename = meta_proerties;
+		
+		metaProps = new Properties();		  
+		
+		String resource = "config/mybatis-config.xml";
+		
+		default_file = new File(filename);
+		
+		FileReader fileReader = new FileReader(default_file);
+		BufferedReader reader = new BufferedReader(fileReader);
+		String line = null;
+		
+		while((line = reader.readLine()) != null){
+			metaProps.put(line.substring(0, line.lastIndexOf("=")) , line.substring(line.indexOf("=")+1));
+        }			
+		
+		InputStream inputStreamMeta = null;
+		try {
+			inputStreamMeta = Resources.getResourceAsStream(resource);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		final SqlSessionFactory sqlSessionFactoryMeta = new SqlSessionFactoryBuilder().build(inputStreamMeta, metaProps);
+		final SqlSession sessionMeta = sqlSessionFactoryMeta.openSession(true);
+
+		
+
+		Map m = new HashMap();
+		m.put("EXE_GRP_ID", "3"); // Connection DB parameter input
+
+		List<DBConnectionVO> list = sessionMeta.selectList("getConnectionList", m); // source connection 정보 List로 받기
+				
+		start = System.currentTimeMillis(); // start_time 
+		Date s_time = new Date(start); // start_time date 
+		
+		// source db connection 정보들 for문으로 루프
+		for (DBConnectionVO dto : list) {	
+			
+			// source_connection 정보 input			
+			props = new Properties();
+			props.put("driver", dto.getSrcDriver());
+			props.put("url", dto.getSrcUrl());
+			props.put("username", dto.getSrcUsername());
+			props.put("password", dto.getSrcPassword());
+			
+			// target_connection 정보 input
+			targetProps = new Properties();
+			targetProps.put("driver", dto.getTgtDriver());
+			targetProps.put("url", dto.getTgtUrl());
+			targetProps.put("username", dto.getTgtUsername());
+			targetProps.put("password", dto.getTgtPassword());
+			
+		
+			// Source DB 
+			InputStream inputStreamSource = null;
+			try {
+				inputStreamSource = Resources.getResourceAsStream(resource);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			// source db
+			final SqlSessionFactory sqlSessionFactorySource = new SqlSessionFactoryBuilder().build(inputStreamSource, props); // source db �뺣낫
+			final SqlSession sessionSource = sqlSessionFactorySource.openSession(ExecutorType.BATCH, true);			
+			
+			Map m_1 = new HashMap();
+			Map m_2 = new HashMap();
+			m_1.put("EXE_GRP_ID", "3"); 
+			m_1.put("SRC_TBL_OWNR_ID", dto.getSrcUsername()); 	
+
+			List<MasterTableVO> master = sessionMeta.selectList("getMetaTableList01", m_1); 
+			
+			// source db connection 
+			for (final MasterTableVO ms : master) {
+				
+				// Target DB �묒냽
+				InputStream inputStreamTarget = null;
+				try {
+					inputStreamTarget = Resources.getResourceAsStream(resource);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				SqlSessionFactory sqlSessionFactoryTarget = new SqlSessionFactoryBuilder().build(inputStreamTarget, targetProps);
+				final SqlSession sessionTarget = sqlSessionFactoryTarget.openSession(ExecutorType.BATCH, false);
+
+				m_2.put("SRC_TBL_ID", ms.getSrcTblId());
+				m_2.put("SQL_CONDTN_TXT", ms.getSqlCondtnTxt());
+				
+				Map m_3 = new HashMap();
+				m_3.put("TGT_TBL_ID", ms.getTgtTblId());
+				m_3.put("EXTRCT_COL_ID",	ms.getExtrctColId());
+				m_3.put("EXTRCT_COL", ms.getExtrctCol());
+				
+			
+				sessionSource.select("pdss5.hs.hdw.ETLSourceMapper.getSourceTableList", m_2,new ResultHandler() 
+				{
+					public void handleResult(ResultContext context) {
+						Map<String, Object> source_map = (Map<String, Object>) context.getResultObject();
+						source_map.put("TGT_TBL_ID", ms.getTgtTblId());
+						source_map.put("EXTRCT_COL_ID",	ms.getExtrctColId());
+						source_map.put("EXTRCT_COL", ms.getExtrctCol());
+						sessionTarget.insert("pdss5.hs.hdw.ETLTargetMapper.insertTargetTable", source_map); //Target insert
+						}					
+					});
+				sessionTarget.commit();
+				sessionTarget.close();
+
+				try {
+					inputStreamTarget.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			props.clear();
+
+			try {
+
+				inputStreamSource.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			sessionSource.close();
+		}
+		
+		long end = System.currentTimeMillis(); // end_time 
+		Date e_time = new Date(end); // end_time date 
+		System.out.println("ELAPSED_DTM=" + (end - start) / 1000);
+		
+		sessionMeta.close();
+		try {		
+			inputStreamMeta.close();			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+	}
+}

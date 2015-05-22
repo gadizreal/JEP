@@ -1,0 +1,4 @@
+db_driver=oracle.jdbc.driver.OracleDriver
+db_url=jdbc:oracle:thin:@192.168.0.216:1521:dev10g
+db_username=lssrc
+db_password=lssrc

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pdss5.hs.hdw.ETLSourceMapper">
+    <select id="getSourceTableList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+       select * 
+       from ${SRC_TBL_ID}
+       <if test="SQL_CONDTN_TXT != null">
+       ${SQL_CONDTN_TXT}
+       </if>
+    </select>   
+    <insert id="testProc" statementType="CALLABLE">       
+        { CALL SP_INSORA ('ORA100T', '1', '20000', '100')}          
+    </insert>            
+</mapper>

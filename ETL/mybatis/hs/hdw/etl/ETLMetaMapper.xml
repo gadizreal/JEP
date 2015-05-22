@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pdss5.hs.hdw.ETLMetaMapper">
+<select id="getMetaTableList01" parameterType="java.util.HashMap" resultType="pdss5.hs.hdw.MasterTableVO">
+      select * 
+      from HST_DCMD_ETLJAVA 
+      where EXE_GRP_ID=#{EXE_GRP_ID} and  SRC_TBL_OWNR_ID=#{SRC_TBL_OWNR_ID}     
+    </select>
+    
+<select id="getConnectionList" parameterType="java.util.HashMap" resultType="pdss5.hs.hdw.DBConnectionVO">
+      select * 
+      from etl_connections
+      where EXE_GRP_ID=#{EXE_GRP_ID}
+    </select>
+</mapper>

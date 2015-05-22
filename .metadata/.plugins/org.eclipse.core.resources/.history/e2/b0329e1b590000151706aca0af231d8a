@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pdss5.hs.hdw.ETLTargetMapper">
+	<insert id="insertLog" parameterType="pdss5.hs.hdw.LogTableVO">
+		insert into TB_ODS_ETLLOG (
+		PRGRM_ID,EXE_STRT_TMSTMP,EXE_STTS_VAL,EXE_GRP_ID,EXE_TYP_NM,SRC_TBL_OWNR_ID,SRC_TBL_ID,SRC_TBL_NM,TGT_TBL_ID,TGT_TBL_NM,SQL_CONDTN_TXT)
+		values
+		(#{prgrmId},#{exeStrtSmstmp},#{exeSttsVal},#{exeGrpId},#{exeTypNm},#{srcTblOwnrId},#{srcTblId},#{srcTblNm},#{tgtTblId},#{tgtTblNm},#{sqlCondtnTxt})
+	</insert>
+
+	<update id="updateLog" parameterType="pdss5.hs.hdw.LogTableVO">
+		update TB_ODS_ETLLOG set
+		EXE_END_TMSTMP=#{exeEndTmstmp}
+		ELPSD_TIME=#{elpsdTime}
+		EXE_STTS_VAL=#{exeSttsVal}
+		ROW_CNT=#{rowCnt}
+		FAIL_CNT=#{failCnt}
+		ERR_CNTNT=#{errCntnt}
+		UP_TMSTMP=#{upTmstmp}
+		where LOG_NO = #{logNo}
+	</update>
+
+	<select id="findActiveBlogLike" resultType="Blog">
+		SELECT * FROM BLOG WHERE state = ‘ACTIVE’
+		<if test="title != null">
+			AND title like #{title}
+		</if>
+		<if test="author != null and author.name != null">
+			AND author_name like #{author.name}
+		</if>
+	</select>
+
+
+</mapper>
+
+
+

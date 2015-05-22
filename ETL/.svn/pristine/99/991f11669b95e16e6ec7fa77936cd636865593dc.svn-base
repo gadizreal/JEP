@@ -1,0 +1,106 @@
+package pdss5.hs.hdw;
+
+import java.io.Serializable;
+
+public class DBConnectionVO implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+	
+	private Integer exe_grp_id;
+	private String src_driver;
+	private String src_url;
+	private String src_username;
+	private String src_password;	
+	private String tgt_driver;
+	private String tgt_url;
+	private String tgt_username;
+	private String tgt_password;
+	
+	public DBConnectionVO(){};
+	
+	public DBConnectionVO(Integer exe_grp_id, String src_driver, String src_url, String src_username, String src_password,
+			String tgt_driver, String tgt_url, String tgt_username, String tgt_password){
+		super();
+		this.exe_grp_id = exe_grp_id;
+		this.src_driver = src_driver;
+		this.src_url = src_url;
+		this.src_username = src_username;
+		this.src_password = src_password;
+		this.tgt_driver = tgt_driver;
+		this.tgt_url = tgt_url;
+		this.tgt_username = tgt_username;
+		this.tgt_password = tgt_password;
+	}
+
+	public Integer getExe_grp_id() {
+		return exe_grp_id;
+	}
+
+	public void setExe_grp_id(Integer exe_grp_id) {
+		this.exe_grp_id = exe_grp_id;
+	}
+
+	public String getSrc_driver() {
+		return src_driver;
+	}
+
+	public void setSrc_driver(String src_driver) {
+		this.src_driver = src_driver;
+	}
+
+	public String getSrc_url() {
+		return src_url;
+	}
+
+	public void setSrc_url(String src_url) {
+		this.src_url = src_url;
+	}
+
+	public String getSrc_username() {
+		return src_username;
+	}
+
+	public void setSrc_username(String src_username) {
+		this.src_username = src_username;
+	}
+
+	public String getSrc_password() {
+		return src_password;
+	}
+
+	public void setSrc_password(String src_password) {
+		this.src_password = src_password;
+	}
+
+	public String getTgt_driver() {
+		return tgt_driver;
+	}
+
+	public void setTgt_driver(String tgt_driver) {
+		this.tgt_driver = tgt_driver;
+	}
+
+	public String getTgt_url() {
+		return tgt_url;
+	}
+
+	public void setTgt_url(String tgt_url) {
+		this.tgt_url = tgt_url;
+	}
+
+	public String getTgt_username() {
+		return tgt_username;
+	}
+
+	public void setTgt_username(String tgt_username) {
+		this.tgt_username = tgt_username;
+	}
+
+	public String getTgt_password() {
+		return tgt_password;
+	}
+
+	public void setTgt_password(String tgt_password) {
+		this.tgt_password = tgt_password;
+	}		
+}

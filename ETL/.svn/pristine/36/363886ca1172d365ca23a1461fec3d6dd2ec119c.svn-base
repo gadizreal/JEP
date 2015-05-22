@@ -1,0 +1,146 @@
+package pdss5.hs.hdw;
+
+import java.io.Serializable;
+
+public class MasterTableVO implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
+	private String src_systm_nm;
+	private String src_tbl_id;
+	private Integer exe_grp_id;
+	private String exe_tpy_nm;
+	private String src_tbl_ownr_id;
+	private String src_tbl_nm;
+	private String tgt_tbl_id;
+	private String tgt_tbl_nm;
+	private String sql_condtn_txt;
+	private String extrct_col_id;
+	private String extrct_col;
+	private String use_yn;
+	private String exe_yn;
+	
+	public MasterTableVO(){};
+	
+	public MasterTableVO(String src_systm_nm, String src_tbl_id, Integer exe_grp_id,String exe_tpy_nm,  String src_tbl_ownr_id, String src_tbl_nm, String tgt_tbl_id, String tgt_tbl_nm,
+			String sql_condtn_txt, String extrct_col_id, String extrct_col, String use_yn, String exe_yn){
+		super();
+		this.src_systm_nm=src_systm_nm;
+		this.src_tbl_id=src_tbl_id;
+		this.exe_grp_id=exe_grp_id;
+		this.exe_tpy_nm=exe_tpy_nm;
+		this.src_tbl_ownr_id=src_tbl_ownr_id;
+		this.src_tbl_nm=src_tbl_nm;
+		this.tgt_tbl_id=tgt_tbl_id;
+		this.tgt_tbl_nm=tgt_tbl_nm;
+		this.sql_condtn_txt=sql_condtn_txt;
+		this.extrct_col_id=extrct_col_id;
+		this.extrct_col=extrct_col;
+		this.use_yn=use_yn;
+		this.exe_yn=exe_yn;		
+	}
+
+	public String getSrc_systm_nm() {
+		return src_systm_nm;
+	}
+
+	public void setSrc_systm_nm(String src_systm_nm) {
+		this.src_systm_nm = src_systm_nm;
+	}
+
+	public String getSrc_tbl_id() {
+		return src_tbl_id;
+	}
+
+	public void setSrc_tbl_id(String src_tbl_id) {
+		this.src_tbl_id = src_tbl_id;
+	}
+
+	public Integer getExe_grp_id() {
+		return exe_grp_id;
+	}
+
+	public void setExe_grp_id(Integer exe_grp_id) {
+		this.exe_grp_id = exe_grp_id;
+	}
+
+	public String getExe_tpy_nm() {
+		return exe_tpy_nm;
+	}
+
+	public void setExe_tpy_nm(String exe_tpy_nm) {
+		this.exe_tpy_nm = exe_tpy_nm;
+	}
+
+	public String getSrc_tbl_ownr_id() {
+		return src_tbl_ownr_id;
+	}
+
+	public void setSrc_tbl_ownr_id(String src_tbl_ownr_id) {
+		this.src_tbl_ownr_id = src_tbl_ownr_id;
+	}
+
+	public String getSrc_tbl_nm() {
+		return src_tbl_nm;
+	}
+
+	public void setSrc_tbl_nm(String src_tbl_nm) {
+		this.src_tbl_nm = src_tbl_nm;
+	}
+
+	public String getTgt_tbl_id() {
+		return tgt_tbl_id;
+	}
+
+	public void setTgt_tbl_id(String tgt_tbl_id) {
+		this.tgt_tbl_id = tgt_tbl_id;
+	}
+
+	public String getTgt_tbl_nm() {
+		return tgt_tbl_nm;
+	}
+
+	public void setTgt_tbl_nm(String tgt_tbl_nm) {
+		this.tgt_tbl_nm = tgt_tbl_nm;
+	}
+
+	public String getSql_condtn_txt() {
+		return sql_condtn_txt;
+	}
+
+	public void setSql_condtn_txt(String sql_condtn_txt) {
+		this.sql_condtn_txt = sql_condtn_txt;
+	}
+
+	public String getExtrct_col_id() {
+		return extrct_col_id;
+	}
+
+	public void setExtrct_col_id(String extrct_col_id) {
+		this.extrct_col_id = extrct_col_id;
+	}
+
+	public String getExtrct_col() {
+		return extrct_col;
+	}
+
+	public void setExtrct_col(String extrct_col) {
+		this.extrct_col = extrct_col;
+	}
+
+	public String getUse_yn() {
+		return use_yn;
+	}
+
+	public void setUse_yn(String use_yn) {
+		this.use_yn = use_yn;
+	}
+
+	public String getExe_yn() {
+		return exe_yn;
+	}
+
+	public void setExe_yn(String exe_yn) {
+		this.exe_yn = exe_yn;
+	}	
+}

@@ -1,0 +1,13 @@
+package pdss5.hs.hdw;
+
+public class ConnectionTest {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
