@@ -25,22 +25,16 @@
 		WHERE EXE_STRT_TMSTMP = #{exeStrtTmstmp}		
 	</select>
 
-	<select id="selectTest" parameterType="pdss5.hs.hdw.LogTableVO" resultType="int">
-		SELECT LOG_NO 
+	<select id="selectTest" resultType="string">
+		SELECT SRC_TBL_ID 
 		FROM TB_ODS_ETLLOG
-		WHERE  EXE_STRT_TMSTMP = #{exeStrtTmstmp}
+		WHERE LOG_NO = 1		
 	</select>
 	
-	<insert id="insertTest" parameterType="string" >
+	<insert id="insertTest" >
 		insert into TB_ODS_ETLLOG (EXE_STRT_TMSTMP,)
-		values	(#{insertTestSting})
+		values	(2015-05-26 10:59:32.894112)
 	</insert>
-
-	<update id="updateUpTmstamp" parameterType="pdss5.hs.hdw.LogTableVO">
-		update TB_ODS_ETLLOG set		
-		UP_TMSTMP=#{upTmstmp}
-		where LOG_NO = #{logNo}
-	</update>
 
 
 </mapper>

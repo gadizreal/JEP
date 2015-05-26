@@ -11,6 +11,7 @@ import java.io.Reader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.acl.LastOwnerException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 /*import org.apache.ibatis.session.SqlSessionFactory;*/
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.slf4j.LoggerFactory;
+
+
 
 public class CopyOfJavaETLProgram {
 
@@ -89,14 +92,18 @@ public class CopyOfJavaETLProgram {
 
 		final SqlSessionFactory sqlSessionFactoryMeta = new SqlSessionFactoryBuilder().build(inputStreamMeta, metaProps);
 		final SqlSession sessionMeta = sqlSessionFactoryMeta.openSession(true);
-
 		
-		// Log DB 접속					
+		// Log DB 접속		
 		String resource_Log = "config/mybatis-config_Log_Test.xml";
 		InputStream inputStream_log = Resources.getResourceAsStream(resource_Log);		
 		SqlSessionFactory sqlSessionFactory_log = new SqlSessionFactoryBuilder().build(inputStream_log);
 		SqlSession session_log = sqlSessionFactory_log.openSession();
-			
+		
+		// 로그DB 시작시간 select 테스트 : 성공
+		logTable.setExeStrtTmstmp("2015-05-26 14:56:02.177000");
+		int f = session_log.selectOne("selectTest", logTable);
+		System.out.println("F : "+f);
+		
 		
 		Map m = new HashMap();
 		m.put("EXE_GRP_ID", "1"); // Connection DB parameter input
@@ -107,11 +114,10 @@ public class CopyOfJavaETLProgram {
 		Date start_time = new Date(start); // start_time date 
 				
 		//로그용 시작시간
-		String start_timstamp = MicroTimestamp.INSTANCE.get();
+		MicroTimestamp startTime = new MicroTimestamp();
+		String start_timstamp = startTime.getFormatedDate();
 		System.out.println("시작시간 : "+start_timstamp);
-		logTable.setExeStrtTmstmp(start_timstamp);
-		
-		
+		logTable.setExeStrtTmstmp(start_timstamp);	
 		
 		// source db connection 정보들 for문으로 루프
 		for (DBConnectionVO dto : list) {	// 여기부터 루프문 시작
@@ -168,7 +174,7 @@ public class CopyOfJavaETLProgram {
 			// 로그용 직접입력정보 입력
 			logTable.setExeGrpId("2"); //  실행그룹을 logTableVO에 입력
 			logTable.setSrcTblOwnrId(dto.getSrcUsername()); // 소스테이블 소유자 입력
-			logTable.setExeTypNm("1");
+			logTable.setExeTypNm("JAVA");
 			
 			// meta master table
 			List<MasterTableVO> master = sessionMeta.selectList("getMetaTableList01", m_1); 	
@@ -205,17 +211,33 @@ public class CopyOfJavaETLProgram {
 				logTable.setTgtTblNm(ms.getTgtTblNm());
 				
 				
+				// 로그 테스트용 logTable 내용 출력
+				System.out.println("getExeStrtTmstmp() : "+logTable.getExeStrtTmstmp());
+				System.out.println(" logTable.getExeGrpId() : "+logTable.getExeGrpId());
+				System.out.println("logTable.getSrcTblOwnrId() : "+ logTable.getSrcTblOwnrId());
+				System.out.println("logTable.getExeTypNm() :"+logTable.getExeTypNm());
+				System.out.println("logTable.getSrcTblId() : "+logTable.getSrcTblId());
+				System.out.println("logTable.getSqlCondtnTxt() : "+logTable.getSqlCondtnTxt());
+				System.out.println("logTable.getSrcTblNm() :"+logTable.getSrcTblNm());
+				System.out.println(" logTable.getTgtTblId() : "+logTable.getTgtTblId());
+				System.out.println("logTable.getTgtTblNm() : "+logTable.getTgtTblNm());					
+				
+				
 				// 로그테이블에 인서트 시작				
 				try { // 로그 인서트 에러를 대비한 트라이구문											
-					session_log.insert("insertLog", logTable); //Log insert					
+					session_log.insert("insertLog", logTable); //Log insert	
+					System.out.println("로그DB insert! ");
+					session_log.commit();
 					} catch (Exception e) {
 						System.out.println("로그 인서트 에러메세지 : "+e+" 여기까지!");
 						err_msg = e.toString();						
 					} 
 				
 				// 로그테이블의 NO 출력
-				try { // 로그 셀렉트 에러를 대비한 트라이구문											
-					logTable.setLogNo(session_log.insert("selectLog", logTable)) ; //log select					
+				try { // 로그 셀렉트 에러를 대비한 트라이구문	
+					int LogNo = session_log.selectOne("selectLog", logTable);
+					logTable.setLogNo(LogNo) ; //log select						
+					System.out.println("로그DB select! LogNo : "+logTable.getLogNo());
 					} catch (Exception e) {
 						System.out.println("로그 셀렉트 에러메세지 : "+e+" 여기까지!");
 						err_msg = e.toString();						
@@ -257,6 +279,12 @@ public class CopyOfJavaETLProgram {
 				logTable.setFailCnt(fail_cnt);
 				logTable.setErrCntnt(err_msg);
 				
+				// 로그용 입력행,실패행,에러메세지 확인
+				System.out.println("logTable.getRowCnt() : "+logTable.getRowCnt());
+				System.out.println("logTable.getFailCnt() : "+logTable.getFailCnt());
+				System.out.println("logTable.getErrCntnt() : "+logTable.getErrCntnt());
+				
+				
 				try {
 					inputStreamTarget.close();
 				} catch (IOException e) {
@@ -274,38 +302,59 @@ public class CopyOfJavaETLProgram {
 			sessionSource.close();
 			
 			// 종료시간
-			String end_timstamp = MicroTimestamp.INSTANCE.get();
+			MicroTimestamp endTime = new MicroTimestamp();
+			String end_timstamp = endTime.getFormatedDate();
+			System.out.println("테이블 업데이트 종료 : "+end_timstamp);
 			logTable.setExeEndTmstmp(end_timstamp);
 			long end = System.currentTimeMillis(); // end_time �쒗쁽
-			logTable.setElpsdTime("ELAPSED_DTM=" + ((end - start) / 1000)+"."+(end - start) % 1000 +"초") ;
+			String ElpsdTime = startTime.getDateFormat().format(endTime.getDate()-startTime.getDate()) + String.format("%03d", (endTime.getMicroSeconds()-startTime.getMicroSeconds()) % 1000);
+			logTable.setElpsdTime(ElpsdTime);
+			System.out.println("ElpsdTime : "+ElpsdTime);
+			logTable.setExeSttsVal("End");
+			System.out.println("logTable.getExeSttsVal() : "+logTable.getExeSttsVal());
+			
 			//로그 테이블 업데이트			
 			try { // 로그 업데이트 에러를 대비한 트라이구문											
-				session_log.update("insertLog", logTable); //Target insert				
+				session_log.update("updateLog", logTable); //Target insert						
+				session_log.commit();
+				System.out.println("로그DB update ! ");	
 				} catch (Exception e) {
 					System.out.println("로그 업데이트 에러메세지 : "+e+" 여기까지!");
 					err_msg = e.toString();						
 				} 			
+
+			// logTable=new LogTableVO(); // VO 초기화
 			
-			logTable=new LogTableVO(); // VO 초기화
-			
-			// 로그 세션 클로즈
-			session_log.close();
-			try {
-				//reader1.close();
-				inputStream_log.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}			
+					
 			
 		} // for문 끝 - 모든 테이블 종료
 		
 		long end2 = System.currentTimeMillis(); // end_time �쒗쁽
 		System.out.println("ELAPSED_DTM=" + ((end2 - start) / 1000)+"."+(end2 - start) % 1000 +"초");
-		String end_timstamp2 = MicroTimestamp.INSTANCE.get();
-		System.out.println("종료시간 : "+end_timstamp2);
 		
-		String up_timstamp = MicroTimestamp.INSTANCE.get();
+		MicroTimestamp endProgramTime = new MicroTimestamp();
+		String up_timstamp = endProgramTime.getFormatedDate();
 		System.out.println("로그 업데이트 시간 : "+up_timstamp);
+		logTable.setUpTmstmp(up_timstamp);
+		
+		try { // 로그 업데이트 에러를 대비한 트라이구문											
+			session_log.update("updateUpTmstamp", logTable); //Target insert	
+			session_log.commit();
+			System.out.println("로그DB updateUpTmstamp ! ");					
+			} catch (Exception e) {
+				System.out.println("로그 업데이트 에러메세지 : "+e+" 여기까지!");
+				err_msg = e.toString();						
+			} 
+		
+		// 로그 세션 클로즈
+		session_log.close();
+		try {
+			//reader1.close();
+			inputStream_log.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+		
 		
 		sessionMeta.close();
 		try {		
