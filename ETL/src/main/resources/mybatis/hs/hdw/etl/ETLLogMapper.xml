@@ -16,7 +16,7 @@
 		FAIL_CNT=#{failCnt},
 		ERR_CNTNT=#{errCntnt},
 		UP_TMSTMP=#{upTmstmp,jdbcType=VARCHAR}
-		where LOG_NO = #{logNo}
+		where LOG_NO=#{logNo}
 	</update>
 
 	<select id="selectLog" parameterType="pdss5.hs.hdw.LogTableVO" resultType="int">

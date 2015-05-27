@@ -1,0 +1,96 @@
+package pdss5.hs.hdw;
+
+import java.text.SimpleDateFormat;
+
+public class Test {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+		
+		for (int i=0;i<30;i++){
+		Test startTime = new Test();
+		
+		
+		
+		System.out.println("시작시간 : "+startTime.getStartDate());
+		
+		System.out.println("시작시간 : "+startTime.getStartNanoseconds());
+		
+		}
+	}
+	   private long              startDate ;
+	   private long              startNanoseconds ;
+	   private SimpleDateFormat  dateFormat ;
+	   private long microSeconds ;
+	   private long date;
+	   private String formatedDate;   
+	   String dt ;
+	   String fm;
+	   
+	   
+	   Test()
+	   {  this.startDate = System.currentTimeMillis() ;
+	      this.startNanoseconds = System.nanoTime() ;
+	      this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS") ;
+	      this.microSeconds = (this.startNanoseconds - this.startNanoseconds) / 1000 ;
+	      this.date = this.startDate + (this.microSeconds/1000) ;
+	      this.formatedDate = this.dateFormat.format(date) + String.format("%03d", microSeconds % 1000) ;
+	      this.dt=formatedDate = this.dateFormat.format(date);
+	      this.fm =  String.format("%03d", microSeconds % 1000) ;
+	   }
+
+
+	public long getStartDate() {
+		return startDate;
+	}
+
+
+	public long getStartNanoseconds() {
+		return startNanoseconds;
+	}
+
+	public SimpleDateFormat getDateFormat() {
+		return dateFormat;
+	}
+
+
+	public long getMicroSeconds() {
+		return microSeconds;
+	}
+
+
+	public long getDate() {
+		return date;
+	}
+
+
+	public String getFormatedDate() {
+		return formatedDate;
+	}
+
+
+	public String getFm() {
+		return fm;
+	}
+
+
+	public void setFm(String fm) {
+		this.fm = fm;
+	}
+
+
+	public String getDt() {
+		return dt;
+	}
+
+
+	public void setDt(String dt) {
+		this.dt = dt;
+	}
+	
+	
+	
+}

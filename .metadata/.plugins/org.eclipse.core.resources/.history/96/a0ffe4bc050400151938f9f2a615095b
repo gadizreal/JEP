@@ -1,0 +1,119 @@
+package pdss5.hs.hdw;
+
+import java.text.SimpleDateFormat;
+
+public class Test {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		qMicroTimestamp mt = new qMicroTimestamp();
+        System.out.println("mt.getFormatedDate() : "+mt.getFormatedDate());
+        System.out.println(mt.getDate());
+		Test startTime = new Test();
+		System.out.println(startTime.getFormatedDate());
+		System.out.println(startTime.getDate());
+		
+		 try {
+		      Thread.sleep(500);
+		    } catch (InterruptedException e) { }
+
+		 Test endTime = new Test();
+		 System.out.println(endTime.getFormatedDate());
+		 System.out.println(endTime.getDate());
+		 
+		 String ElpsdTime = startTime.getDateFormat().format(endTime.getDate()-startTime.getDate()) + String.format("%03d", (endTime.getMicroSeconds()-startTime.getMicroSeconds()) % 1000);
+		System.out.println("경과시간 : "+ElpsdTime);	
+			
+		
+		long diff = endTime.getStartDate() - startTime.getStartDate();
+		long diffSeconds = diff / 1000 % 60;
+		long diffMinutes = diff / (60 * 1000) % 60;
+		long diffHours = diff / (60 * 60 * 1000) % 24;
+		long diffDays = diff / (24 * 60 * 60 * 1000);
+		long diffMicroSeconds = diff = endTime.getMicroSeconds() - startTime.getMicroSeconds();
+		
+		System.out.println("diff : "+diff);
+		System.out.println(diffDays + " days, ");
+		System.out.println(diffHours + " hours, ");
+		System.out.println(diffMinutes + " minutes, ");
+		System.out.println(diffSeconds + " seconds.");
+		System.out.println(diffMicroSeconds + " diffMicroSeconds.");
+		
+		for (int i=0;i<5;i++){
+		
+		}
+	}
+	   private long              startDate ;
+	   private long              startNanoseconds ;
+	   private SimpleDateFormat  dateFormat ;
+	   private long microSeconds ;
+	   private long date;
+	   private String formatedDate;   
+	   String dt ;
+	   String fm;
+	
+	   Test()
+	   {  this.startDate = System.currentTimeMillis() ;
+	      this.startNanoseconds = System.nanoTime() ;
+	      this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS") ;
+	      this.microSeconds = this.startNanoseconds / 1000 ;
+	      this.date = this.startDate + (this.microSeconds/1000) ;
+	      this.formatedDate = this.dateFormat.format(date) + String.format("%03d", microSeconds % 1000) ;
+	      this.dt= this.dateFormat.format(date);
+	      this.fm =  String.format("%03d", microSeconds % 1000) ;
+	   }
+
+
+	public long getStartDate() {
+		return startDate;
+	}
+
+
+	public long getStartNanoseconds() {
+		return startNanoseconds;
+	}
+
+	public SimpleDateFormat getDateFormat() {
+		return dateFormat;
+	}
+
+
+	public long getMicroSeconds() {
+		return microSeconds;
+	}
+
+
+	public long getDate() {
+		return date;
+	}
+
+
+	public String getFormatedDate() {
+		return formatedDate;
+	}
+
+
+	public String getFm() {
+		return fm;
+	}
+
+
+	public void setFm(String fm) {
+		this.fm = fm;
+	}
+
+
+	public String getDt() {
+		return dt;
+	}
+
+
+	public void setDt(String dt) {
+		this.dt = dt;
+	}
+	
+	
+	
+}
