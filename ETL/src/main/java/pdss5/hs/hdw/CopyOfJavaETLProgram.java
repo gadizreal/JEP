@@ -78,8 +78,8 @@ public class CopyOfJavaETLProgram {
 		
 		// Master Table 접속 // 메타DB 
 		InputStream inputStreamMeta = null;
-		try {
-			inputStreamMeta = Resources.getResourceAsStream(resource);
+		try {			
+			inputStreamMeta = Resources.getResourceAsStream(resource);			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -94,7 +94,7 @@ public class CopyOfJavaETLProgram {
 		SqlSession session_log = sqlSessionFactory_log.openSession();
 		
 		Map m = new HashMap();
-		m.put("EXE_GRP_ID", "1"); // Connection DB parameter input
+		m.put("EXE_GRP_ID", "3"); // Connection DB parameter input
 
 		List<DBConnectionVO> list = sessionMeta.selectList("getConnectionList", m); // source connection 정보 List로 받기
 						
@@ -119,17 +119,17 @@ public class CopyOfJavaETLProgram {
 			// source_connection 정보 표시			
 			//여기서부터 logger쩜debug -> system쩜out쩜println 으로 변경  
 			System.out.println("================================================================");			
-			System.out.println("DB_DRIVER=" + dto.getSrcDriver());
-			System.out.println("DB_DRIVER=" + dto.getSrcUrl());
-			System.out.println("DB_DRIVER=" + dto.getSrcUsername());
-			System.out.println("DB_DRIVER=" + dto.getSrcPassword());			
+			System.out.println("SOURCE_DB_DRIVER=" + dto.getSrcDriver());
+			System.out.println("SOURCE_DB_DRIVER=" + dto.getSrcUrl());
+			System.out.println("SOURCE_DB_DRIVER=" + dto.getSrcUsername());
+			System.out.println("SOURCE_DB_DRIVER=" + dto.getSrcPassword());			
 			System.out.println("================================================================");			
 			// target_connection 정보 표시
             System.out.println("================================================================");			
-			System.out.println("DB_DRIVER=" + dto.getTgtDriver());
-			System.out.println("DB_DRIVER=" + dto.getTgtUrl());
-			System.out.println("DB_DRIVER=" + dto.getTgtUsername());
-			System.out.println("DB_DRIVER=" + dto.getTgtPassword());			
+			System.out.println("TARGET_DB_DRIVER=" + dto.getTgtDriver());
+			System.out.println("TARGET_DB_DRIVER=" + dto.getTgtUrl());
+			System.out.println("TARGET_DB_DRIVER=" + dto.getTgtUsername());
+			System.out.println("TARGET_DB_DRIVER=" + dto.getTgtPassword());			
 			System.out.println("================================================================");		
 			// 여기까지 변경 logger쩜debug -> system쩜out쩜println 으로 변경  
 			
@@ -138,8 +138,10 @@ public class CopyOfJavaETLProgram {
 			InputStream inputStreamSource = null;
 			try {
 				inputStreamSource = Resources.getResourceAsStream(resource);
+				
 			} catch (IOException e) {
 				e.printStackTrace();
+				
 			}
 
 			// source db �뺣낫 mybatis-config.xml濡�mapping
@@ -148,14 +150,13 @@ public class CopyOfJavaETLProgram {
 			
 			Map m_1 = new HashMap();
 			Map m_2 = new HashMap();
-			m_1.put("EXE_GRP_ID", "2"); // master table parameter媛�input
+			m_1.put("EXE_GRP_ID", "4"); // master table parameter媛�input
 			m_1.put("SRC_TBL_OWNR_ID", dto.getSrcUsername()); // master table parameter媛�input			
 			
 			// 로그용 직접입력정보 입력
-			logTable.setExeGrpId("2"); //  실행그룹을 logTableVO에 입력
+			logTable.setExeGrpId("4"); //  실행그룹을 logTableVO에 입력
 			logTable.setSrcTblOwnrId(dto.getSrcUsername()); // 소스테이블 소유자 입력
 			logTable.setExeTypNm("JAVA"); // 실행 타입 입력
-			
 			// meta master table
 			List<MasterTableVO> master = sessionMeta.selectList("getMetaTableList01", m_1); 	
 			
@@ -172,14 +173,16 @@ public class CopyOfJavaETLProgram {
 				// Target DB 
 				InputStream inputStreamTarget = null;
 				try {
-					inputStreamTarget = Resources.getResourceAsStream(resource);
+					inputStreamTarget = Resources.getResourceAsStream(resource); 
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
  
+				// 타겟DB 접속
 				SqlSessionFactory sqlSessionFactoryTarget = new SqlSessionFactoryBuilder().build(inputStreamTarget, targetProps);
 				final SqlSession sessionTarget = sqlSessionFactoryTarget.openSession(ExecutorType.BATCH, false);
 
+				//소스 테이블 ID, 조건문 입력
 				m_2.put("SRC_TBL_ID", ms.getSrcTblId());
 				m_2.put("SQL_CONDTN_TXT", ms.getSqlCondtnTxt());
 				
@@ -188,6 +191,7 @@ public class CopyOfJavaETLProgram {
 				logTable.setSqlCondtnTxt(ms.getSqlCondtnTxt()); // 로그용 조건문 입력
 				logTable.setSrcTblNm(ms.getSrcTblNm());  // 로그용 소스테이블 이름 입력
 				
+				// 타겟 테이블 ID, 대상컬럼ID,대상컬럼 입력
 				Map m_3 = new HashMap();
 				m_3.put("TGT_TBL_ID", ms.getTgtTblId());
 				m_3.put("EXTRCT_COL_ID",	ms.getExtrctColId());
@@ -203,7 +207,7 @@ public class CopyOfJavaETLProgram {
 				System.out.println("실행 그룹 ID 	 : "+logTable.getExeGrpId());
 				System.out.println("소스 테이블 소유자	: "+ logTable.getSrcTblOwnrId());
 				System.out.println("실행 타입 		 : "+logTable.getExeTypNm());
-				System.out.println("소트 테이블 ID	 : "+logTable.getSrcTblId());
+				System.out.println("소스 테이블 ID	 : "+logTable.getSrcTblId());
 				System.out.println("조건문		 : "+logTable.getSqlCondtnTxt());
 				System.out.println("소스 테이블 이름	 : "+logTable.getSrcTblNm());
 				System.out.println("타겟 테이블 ID 	 : "+logTable.getTgtTblId());
@@ -334,7 +338,7 @@ public class CopyOfJavaETLProgram {
 		try { // 로그 업데이트 에러를 대비한 트라이구문											
 			session_log.update("updateUpTmstamp", logTable); //Target insert	
 			session_log.commit();
-			System.out.println("로그DB updateUpTmstamp ! ");					
+			System.out.println("로그DB 마지막 UPDATE ! ");					
 			} catch (Exception e) {
 				System.out.println("로그 업데이트 에러메세지 : "+e+" 로그 업데이트 에러메세지 여기까지!");
 				err_msg = e.toString();						
