@@ -17,7 +17,7 @@
 		<setting name="safeRowBoundsEnabled" value="false" />
 		<setting name="mapUnderscoreToCamelCase" value="false" />
 		<setting name="localCacheScope" value="SESSION" />
-		<setting name="jdbcTypeForNull" value="NULL" />
+		<setting name="jdbcTypeForNull" value="NULL" /> 
 		<setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString" />
 		<setting name="callSettersOnNulls" value="true" />
 		<setting name="mapUnderscoreToCamelCase" value="true" />
@@ -44,6 +44,7 @@
 		<mapper resource="mybatis/hs/hdw/etl/ETLSourceMapper.xml" />
 		<mapper resource="mybatis/hs/hdw/etl/ETLTargetMapper.xml" />
 		<mapper resource="mybatis/hs/hdw/etl/ETLMetaMapper.xml" />
+		<mapper resource="mybatis/hs/hdw/etl/ETLLogMapper.xml" />
 	</mappers>
 </configuration>
 

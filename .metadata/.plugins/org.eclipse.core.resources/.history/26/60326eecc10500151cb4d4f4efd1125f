@@ -1,0 +1,14 @@
+package pdss5.hs.hdw;
+
+public class TimCal {
+
+	public String calTime{
+	// 시간계산식
+	long diff = endTime.getTimeInMillis() - startTime.getTimeInMillis();
+	long diffSeconds = diff / 1000 % 60;
+	long diffMinutes = diff / (60 * 1000) % 60;
+	long diffHours = diff / (60 * 60 * 1000) % 24;
+	long diffDays = diff / (24 * 60 * 60 * 1000);
+	return diffDays + "d "+diffHours + "h "+diffMinutes + "m "+diffSeconds + "."+diff+"s";
+	}
+}

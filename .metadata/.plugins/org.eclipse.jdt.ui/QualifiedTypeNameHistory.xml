@@ -18,4 +18,6 @@
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="pdss5.hs.hdw.MicroTimestamp"/>
 <fullyQualifiedTypeName name="org.apache.log4j.PropertyConfigurator"/>
+<fullyQualifiedTypeName name="pdss5.hs.hdw.TimCal"/>
+<fullyQualifiedTypeName name="java.lang.Exception"/>
 </qualifiedTypeNameHistroy>

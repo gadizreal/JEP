@@ -2,54 +2,26 @@ package pdss5.hs.hdw;
 
 public class LogTableVO {
 
-	private Integer logNo	;
-	private String prgrmId	;
-	private String elpsdTime;
-	private String errCntnt	;
-	private String exeEndTmstmp	;
-	private String exeGrpId	;
-	private String exeStrtTmstmp;
-	private String exeSttsVal	;
-	private String exeTypNm	;
-	private Integer failCnt	;
-	private Integer rowCnt	;	
-	private String sqlCondtnTxt	;
-	private String srcTblId	;
-	private String srcTblNm	;
-	private String srcTblOwnrId	;
-	private String tgtTblId	;
-	private String tgtTblNm;
-	private String upTmstmp	;
+	private String prgrmId	;		// 프로그램 ID
+	private String elpsdTime;		// 작업 시간
+	private String errCntnt	;		// 에러 개수
+	private String exeEndTmstmp	;	// 종료 시간
+	private String exeGrpId	;		// 그룹 ID
+	private String exeStrtTmstmp;	// 시작 시간
+	private String exeSttsVal	;	// 프로그램 상태
+	private String exeTypNm	;		// 실행 타입
+	private Integer failCnt	;		// 실패 row 개수
+	private Integer rowCnt	;		// 대상 row 개수
+	private String sqlCondtnTxt	;	// 조건문
+	private String srcTblId	;		// 소스 테이블 ID
+	private String srcTblNm	;		// 소스 테이블 이름
+	private String srcTblOwnrId	;	// 소스 테이블 소유자
+	private String tgtTblId	;		// 타겟 테이블 ID
+	private String tgtTblNm;		// 타겟 테이블 이름
 	
 	public LogTableVO() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-
-	public LogTableVO(String prgrmId, String elpsdTime, String errCntnt,
-			String exeEndTmstmp, String exeGrpId, String exeStrtTmstmp,
-			String exeSttsVal, String exeTypNm, Integer failCnt,
-			Integer rowCnt, String sqlCondtnTxt, String srcTblId,
-			String srcTblNm, String srcTblOwnrId, String tgtTblId,
-			String tgtTblNm, String upTmstmp) {
-		super();
-		this.prgrmId = prgrmId;
-		this.elpsdTime = elpsdTime;
-		this.errCntnt = errCntnt;
-		this.exeEndTmstmp = exeEndTmstmp;
-		this.exeGrpId = exeGrpId;
-		this.exeStrtTmstmp = exeStrtTmstmp;
-		this.exeSttsVal = exeSttsVal;
-		this.exeTypNm = exeTypNm;
-		this.failCnt = failCnt;
-		this.rowCnt = rowCnt;
-		this.sqlCondtnTxt = sqlCondtnTxt;
-		this.srcTblId = srcTblId;
-		this.srcTblNm = srcTblNm;
-		this.srcTblOwnrId = srcTblOwnrId;
-		this.tgtTblId = tgtTblId;
-		this.tgtTblNm = tgtTblNm;
-		this.upTmstmp = upTmstmp;
 	}
 
 	public String getPrgrmId() {
@@ -178,22 +150,6 @@ public class LogTableVO {
 
 	public void setTgtTblNm(String tgtTblNm) {
 		this.tgtTblNm = tgtTblNm;
-	}
-
-	public String getUpTmstmp() {
-		return upTmstmp;
-	}
-
-	public void setUpTmstmp(String upTmstmp) {
-		this.upTmstmp = upTmstmp;
-	}
-
-	public Integer getLogNo() {
-		return logNo;
-	}
-
-	public void setLogNo(Integer logNo) {
-		this.logNo = logNo;
 	}
 
 	

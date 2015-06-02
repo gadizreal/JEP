@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pdss5.hs.hdw.ETLTargetMapper">
+    <select id="getTargetTableList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+      select * 
+      from HST_DCMD_ETLJAVA 
+      where EXE_GRP_ID=#{EXE_GRP_ID} 
+      <if test="SRC_TBL_ID != null">       
+        and SRC_TBL_ID=#{SRC_TBL_ID}
+      </if>
+    </select>   
+    
+    <insert id="insertTargetTable" parameterType="java.util.List">      
+        insert into ${TGT_TBL_ID}(${EXTRCT_COL_ID}) values(${EXTRCT_COL})
+    </insert>    
+    
+    <select id="selectTargetTableDate" parameterType="java.util.List" resultType="java.util.List">      
+        select ${EXTRCT_COL_ID} from into ${SRC_TBL_ID} 
+    </select>   
+    
+    
+    <insert id="insertTargetLogTable" parameterType="java.util.HashMap">      
+        insert into HST_DCMD_ETLLOG(STRT_DTM, PRGRM_ID, END_DTM, ELAPSED_DTM, ROW_CNT, EXE_GRP_ID, EXE_TPY_NM, SRC_TBL_OWNR_ID, SRC_TBL_ID, SRC_TBL_NM, TGT_TBL_ID, TGT_TBL_NM, SQL_CONDTN_TXT) 
+        values(#{STRT_DTM}, #{PRGRM_ID},#{END_DTM, jdbcType=DATE},#{ELAPSED_DTM, jdbcType=INTEGER},#{ROW_CNT, jdbcType=INTEGER},#{EXE_GRP_ID},#{EXE_TPY_NM},#{SRC_TBL_OWNR_ID},#{SRC_TBL_ID},#{SRC_TBL_NM},#{TGT_TBL_ID},#{TGT_TBL_NM},#{SQL_CONDTN_TXT, jdbcType=VARCHAR})
+    </insert>
+       
+</mapper>
+
+
+

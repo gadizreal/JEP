@@ -70,6 +70,7 @@ public class JavaETLProgram {
 		
 		while((line = reader.readLine()) != null){
 			metaProps.put(line.substring(0, line.lastIndexOf("=")) , line.substring(line.indexOf("=")+1));
+			System.out.println("line.substring : "+(line.substring(0, line.lastIndexOf("=")) + line.substring(line.indexOf("=")+1)));
         }			
 		
 		// Master Table 접속 // 메타DB ? 
