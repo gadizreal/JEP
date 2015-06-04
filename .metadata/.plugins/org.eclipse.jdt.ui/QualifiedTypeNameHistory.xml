@@ -6,7 +6,6 @@
 <fullyQualifiedTypeName name="org.apache.ibatis.session.SqlSession"/>
 <fullyQualifiedTypeName name="pdss5.hs.hdw.LogTableVO"/>
 <fullyQualifiedTypeName name="java.io.Reader"/>
-<fullyQualifiedTypeName name="java.sql.Timestamp"/>
 <fullyQualifiedTypeName name="java.sql.Date"/>
 <fullyQualifiedTypeName name="java.util.TimeZone"/>
 <fullyQualifiedTypeName name="java.text.DateFormat"/>
@@ -20,4 +19,5 @@
 <fullyQualifiedTypeName name="org.apache.log4j.PropertyConfigurator"/>
 <fullyQualifiedTypeName name="pdss5.hs.hdw.TimCal"/>
 <fullyQualifiedTypeName name="java.lang.Exception"/>
+<fullyQualifiedTypeName name="java.sql.Timestamp"/>
 </qualifiedTypeNameHistroy>

@@ -2,29 +2,33 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="311" key="DIALOG_WIDTH"/>
-		<item value="444" key="DIALOG_Y_ORIGIN"/>
-		<item value="1162" key="DIALOG_X_ORIGIN"/>
+		<item value="550" key="DIALOG_Y_ORIGIN"/>
 		<item value="442" key="DIALOG_HEIGHT"/>
+		<item value="1252" key="DIALOG_X_ORIGIN"/>
 		<item value="1|맑은 고딕|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wholeword"/>
-		<item value="row_cnt" key="selection"/>
+		<item value="SIT" key="selection"/>
 		<list key="findhistory">
-			<item value="row_cnt"/>
-			<item value="row_cnt++"/>
-			<item value="Success"/>
-			<item value="getExeSttsVal"/>
-			<item value="tran"/>
-			<item value="exeStrtTmstmp"/>
-			<item value="setExeSttsVal"/>
-			<item value="sqlSessionFactoryTarget"/>
+			<item value="SIT"/>
+			<item value="에러메세지"/>
+			<item value="총 소스"/>
+			<item value="logTable"/>
+			<item value="inputStreamTarget"/>
+			<item value="session_log"/>
+			<item value="JAVA"/>
+			<item value="setSqlCondtnTxt"/>
 		</list>
 		<list key="replacehistory">
+			<item value="totTgtTbNm"/>
+			<item value="totTgtTbId"/>
+			<item value="totSrtTbId"/>
+			<item value="totSrtTbNm"/>
 			<item value="},#{"/>
 			<item value="fail_cnt"/>
 			<item value="System.out.println"/>
