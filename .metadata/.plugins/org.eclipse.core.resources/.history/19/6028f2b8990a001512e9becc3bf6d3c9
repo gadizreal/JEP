@@ -51,8 +51,6 @@ public class CopyOfJavaETLProgram {
 	private static int tot_row_cnt=0;
 	private static int tot_fail_cnt=0;
 	private static long ten_mil=0;
-	private static long for_tot_mil=0;
-	private static int for_tot_row_cnt=0;
 	
 	// 대용량 ETL 작업용
 	static 	Long totMil=(long) 0;
@@ -129,8 +127,7 @@ public class CopyOfJavaETLProgram {
 		
 		Map m = new HashMap();
 		m.put("EXE_GRP_ID", "2"); // Connection DB parameter input
-		// 3 oracle->db2
-		// 2 oracle -> oracle
+
 		List<DBConnectionVO> list = sessionMeta.selectList("getConnectionList", m); // source connection 정보 List로 받기
 				
 		
@@ -287,13 +284,13 @@ public class CopyOfJavaETLProgram {
 				
 				
 				
-				insertSize=10000; // insert 단위
+				insertSize=1000;
 				for (int i=0;i<k;i++){				
 				// 로그테이블 NO 출력
 				row_cnt=0; // 대상 row 개수 초기화
 				fail_cnt=0; // 실패 row 개수 초기화
 				err_msg=""; // 에러메세지 초기화			
-				ten_mil=0;  // insert 단위 10배수 단위 시간
+				ten_mil=0;
 				// 커밋계산용 시작시간
 				MicroTimestamp startInsertTime = new MicroTimestamp(); 
 				SIT= new MicroTimestamp(); 
@@ -312,13 +309,13 @@ public class CopyOfJavaETLProgram {
 									sessionTarget.commit();
 									MicroTimestamp EIT = new MicroTimestamp(); 
 									totMil+=calMilTime(SIT,EIT);
-									ten_mil+=calMilTime(SIT,EIT);
-									System.out.println(insert_cnt+"건 insert. "+insertSize+"건 insert 시간 : "+calTime(SIT,EIT)+", 누적 평균 insert 시간 : "+milToTime(totMil/(insert_cnt/insertSize)));
+									ten_mil=calMilTime(SIT,EIT);
+									System.out.println(insert_cnt+"건 insert. "+"만건 insert 시간 : "+calTime(SIT,EIT)+", "+insertSize+"건 평균 insert 시간 : "+milToTime(totMil/(insert_cnt/insertSize)));
 								
 									SIT = EIT;
 								}		
 							if(insert_cnt%(insertSize*10)==0){
-								System.out.println("10번 평균 insert 시간 : "+milToTime(ten_mil/10));
+								System.out.println(insertSize*10+"건 평균 insert 시간 : "+milToTime(ten_mil/(insert_cnt/10)));
 								ten_mil=0;
 							}
 							
@@ -344,16 +341,16 @@ public class CopyOfJavaETLProgram {
 				// 커밋이 계산된 시간 xd xh xm x.xxxs 로 입력
 				String insertElpsdTime = calTime(startInsertTime,endInsertTime);				
 				System.out.println("인서트 건수 : "+row_cnt+"개, 인서트에 걸린 시간 : "+insertElpsdTime);
-				for_tot_mil+=calMilTime(startInsertTime,endInsertTime);
-				for_tot_row_cnt+=row_cnt;
+				totMil+=calMilTime(startInsertTime,endInsertTime);
+				totCnt+=row_cnt;
 				} // 대량 ETL for문 끝
 				
 				// 커밋 성능용 체크
 				sessionTarget.close();
 				System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");		
 				System.out.println("총 작업 횟수 : "+k+"번 반복");
-				System.out.println("총 작업 건수 : "+for_tot_row_cnt+"개, 총 작업 시간 : "+milToTime(for_tot_mil));
-				System.out.println("평균 작업 건수 : "+for_tot_row_cnt/k+"개, 평균 작업 시간 : "+milToTime(for_tot_mil/k));
+				System.out.println("총 작업 건수 : "+totCnt+"개, 총 작업 시간 : "+milToTime(totMil));
+				System.out.println("평균 작업 건수 : "+totCnt/k+"개, 평균 작업 시간 : "+milToTime(totMil/k));
 				System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
 				
 				
@@ -370,7 +367,6 @@ public class CopyOfJavaETLProgram {
 				tot_fail_cnt+=fail_cnt;
 				
 				// 로그용 입력행,실패행,에러메세지 확인
-				System.out.println("커밋 단위 : "+insertSize+"개");
 				System.out.println("실행 row 개수 	: "+logTable.getRowCnt());
 				System.out.println("에러 메세지	: "+logTable.getErrCntnt());
 				

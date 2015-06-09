@@ -128,9 +128,8 @@ public class CopyOfJavaETLProgram {
 		final SqlSession sessionMeta = sqlSessionFactoryMeta.openSession(true);
 		
 		Map m = new HashMap();
-		m.put("EXE_GRP_ID", "2"); // Connection DB parameter input
-		// 3 oracle->db2
-		// 2 oracle -> oracle
+		m.put("EXE_GRP_ID", "3"); // Connection DB parameter input
+
 		List<DBConnectionVO> list = sessionMeta.selectList("getConnectionList", m); // source connection 정보 List로 받기
 				
 		
