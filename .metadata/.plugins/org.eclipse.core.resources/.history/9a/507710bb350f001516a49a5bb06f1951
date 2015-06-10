@@ -290,7 +290,7 @@ public class CopyOfJavaETLProgram {
 				
 				
 				
-				insertSize=10000; // insert 단위
+				insertSize=1000; // insert 단위
 				for (int i=0;i<k;i++){				
 				// 로그테이블 NO 출력
 				row_cnt=0; // 대상 row 개수 초기화

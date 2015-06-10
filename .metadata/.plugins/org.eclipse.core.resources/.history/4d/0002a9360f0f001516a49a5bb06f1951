@@ -62,7 +62,7 @@ public class CopyOfJavaETLProgram {
 	private static long ten_mil=0;
 	private static long for_tot_mil=0;
 	private static int for_tot_row_cnt=0;
-	static  MicroTimestamp tot_SIT ; 
+	
 	
 	
 	public static String calTime(MicroTimestamp a, MicroTimestamp b){
@@ -131,7 +131,7 @@ public class CopyOfJavaETLProgram {
 		final SqlSession sessionMeta = sqlSessionFactoryMeta.openSession(true);
 		
 		Map m = new HashMap();
-		m.put("EXE_GRP_ID", "5"); // Connection DB parameter input
+		m.put("EXE_GRP_ID", "2"); // Connection DB parameter input
 		// 3 oracle->db2
 		// 2 oracle -> oracle
 		List<DBConnectionVO> list = sessionMeta.selectList("getConnectionList", m); // source connection 정보 List로 받기
@@ -290,7 +290,7 @@ public class CopyOfJavaETLProgram {
 				
 				
 				
-				insertSize=10000; // insert 단위
+				insertSize=100; // insert 단위
 				for (int i=0;i<k;i++){				
 				// 로그테이블 NO 출력
 				row_cnt=0; // 대상 row 개수 초기화
@@ -300,7 +300,6 @@ public class CopyOfJavaETLProgram {
 				// 커밋계산용 시작시간
 				MicroTimestamp startInsertTime = new MicroTimestamp(); 
 				SIT= new MicroTimestamp(); 
-				tot_SIT=startInsertTime;
 				
 				sessionSource.select("pdss5.hs.hdw.ETLSourceMapper.getSourceTableList", m_2,new ResultHandler(){ // 소스테이블의 1row씩 진행
 					public void handleResult(ResultContext context) { //타겟  인서트를 위한 반복구문. 인서트 행 숫자만큼 반복
@@ -323,7 +322,7 @@ public class CopyOfJavaETLProgram {
 								}		
 							if(insert_cnt%(insertSize*10)==0){
 								System.out.println("10번 평균 insert 시간 : "+milToTime(ten_mil/10));
-								System.out.println("프로그램 총 구동 시간 : "+calTime(tot_SIT,SIT));
+								System.out.println("프로그램 구동 시간 : "+calTime(startInsertTime,SIT));
 								ten_mil=0;
 							}
 							

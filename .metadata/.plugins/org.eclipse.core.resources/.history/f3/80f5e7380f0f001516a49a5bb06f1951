@@ -131,7 +131,7 @@ public class CopyOfJavaETLProgram {
 		final SqlSession sessionMeta = sqlSessionFactoryMeta.openSession(true);
 		
 		Map m = new HashMap();
-		m.put("EXE_GRP_ID", "5"); // Connection DB parameter input
+		m.put("EXE_GRP_ID", "2"); // Connection DB parameter input
 		// 3 oracle->db2
 		// 2 oracle -> oracle
 		List<DBConnectionVO> list = sessionMeta.selectList("getConnectionList", m); // source connection 정보 List로 받기
@@ -290,7 +290,7 @@ public class CopyOfJavaETLProgram {
 				
 				
 				
-				insertSize=10000; // insert 단위
+				insertSize=100; // insert 단위
 				for (int i=0;i<k;i++){				
 				// 로그테이블 NO 출력
 				row_cnt=0; // 대상 row 개수 초기화
@@ -323,7 +323,7 @@ public class CopyOfJavaETLProgram {
 								}		
 							if(insert_cnt%(insertSize*10)==0){
 								System.out.println("10번 평균 insert 시간 : "+milToTime(ten_mil/10));
-								System.out.println("프로그램 총 구동 시간 : "+calTime(tot_SIT,SIT));
+								System.out.println("프로그램 구동 시간 : "+calTime(tot_SIT,SIT));
 								ten_mil=0;
 							}
 							
